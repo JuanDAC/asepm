@@ -1,5 +1,5 @@
 
-const moduleDirectory = './src/module';
+const modulesDirectory = './src/module';
 const packageFile = './aseprite-package.json';
 
-module.exports = { moduleDirectory, packageFile };
+module.exports = { modulesDirectory, packageFile };

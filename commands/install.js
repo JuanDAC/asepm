@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const clone = require('git-clone/promise');
 const alert = require('cli-alerts');
-const { packageFile, moduleDirectory } = require('./constants');
+const { packageFile, modulesDirectory } = require('./constants');
 
 const getPackageFile = async ({ debug }) => {
   const exists = await fs.pathExists(packageFile)
@@ -25,6 +25,8 @@ const addDependencyPackage = async ({ debug, dependency }) => {
 const installDependency = ({ debug }) => async (dependency) => {
   try {
     debug && console.log(`Installing ${dependency}...`);
+    const moduleDirectory = `${modulesDirectory}/${dependency}`;
+    await fs.ensureDir(moduleDirectory);
     const repository = `https://github.com/${dependency}.git`;
     await clone(repository, moduleDirectory);
     return true;
@@ -46,7 +48,6 @@ const installAll = async ({ debug }) => {
   debug && console.log('Installing all...');
   try {
     const { dependencies } = await getPackageFile({ debug });
-    await fs.ensureDir(moduleDirectory);
     if (Array.isArray(dependencies)) {
       dependencies.forEach(installDependency({ debug }));
     }
@@ -73,7 +74,6 @@ const installSingle = async ({ debug, dependency }) => {
   }
   debug && console.log('Installing single...');
   try {
-    await fs.ensureDir(moduleDirectory);
     const installed = await installDependency({ debug })(dependency);
     installed && await addDependencyPackage({ debug, dependency })
   } catch (error) {
