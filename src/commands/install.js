@@ -44,7 +44,7 @@ const installDependency = ({ debug }) => async (dependency) => {
   }
 }
 
-const installAll = async ({ debug }) => {
+const installAllFromPackage = async ({ debug }) => {
   debug && console.log('Installing all...');
   try {
     const { dependencies } = await getPackageFile({ debug });
@@ -67,19 +67,18 @@ invalidFormat = (dependency) => {
     || dependency.includes('\0');
 }
 
-const installSingle = async ({ debug, dependency }) => {
-  if (invalidFormat(dependency)) {
-    debug && console.log('Invalid dependency...');
-    return;
-  }
-  debug && console.log('Installing single...');
+const installSpecific = async ({ debug, dependencies }) => {
+  debug && console.log('Installing specific...');
   try {
-    const installed = await installDependency({ debug })(dependency);
-    installed && await addDependencyPackage({ debug, dependency })
+    if (Array.isArray(dependencies))
+      dependencies.forEach(async (dependency) => {
+        const installed = await installDependency({ debug })(dependency);
+        installed && await addDependencyPackage({ debug, dependency });
+      });
   } catch (error) {
     console.error(error);
   }
 
 };
 
-module.exports = { installAll, installSingle }
+module.exports = { installSpecific, installAllFromPackage }
