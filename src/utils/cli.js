@@ -25,6 +25,12 @@ const flags = {
 		type: `boolean`,
 		alias: `v`,
 		desc: `Print CLI version`
+	},
+	template: {
+		type: `string`,
+		default: `juandac/ase-template-script`,
+		alias: `t`,
+		desc: `Define a template to use`
 	}
 };
 
