@@ -31,21 +31,9 @@ const selectorSingle = async ({ flags = {}, command, args, cli } = {}) => {
    * @author JuanDAC <https://github.com/juandac/>
    * @see https://www.npmjs.com/package/asepm#init
    * @example asepm init
-   * @example asepm init -y
    * @example asepm init --template=library
    * @example asepm init --template=script
    * @example asepm init --template=<template>
-   * @example asepm init --template=<template> --name=<name>
-   * @example asepm init --template=<template> --name=<name> --description=<description>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository> --keywords=<keywords>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository> --keywords=<keywords> --bugs=<bugs>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository> --keywords=<keywords> --bugs=<bugs> --homepage=<homepage>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository> --keywords=<keywords> --bugs=<bugs> --homepage=<homepage> --plugins=<plugin>
-   * @example asepm init --template=<template> --name=<name> --description=<description> --author=<author> --license=<license> --version=<version> --repository=<repository> --keywords=<keywords> --bugs=<bugs> --homepage=<homepage> --plugins=<plugin> --dependencies=<dependencies>
    */
   if (command.trim() === ('init') && args.length === 0)
     return await init(flags);

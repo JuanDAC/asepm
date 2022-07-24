@@ -1,18 +1,8 @@
 const fs = require('fs-extra')
 const clone = require('git-clone/promise');
 const alert = require('cli-alerts');
-const { packageFile, modulesDirectory } = require('../common/constants');
+const { packageFile, modulesDirectory, getPackageFile } = require('../common/constants');
 
-const getPackageFile = async ({ debug }) => {
-  const exists = await fs.pathExists(packageFile)
-  if (!exists) {
-    debug && console.log('Creating package file...');
-    await fs.ensureFile(packageFile);
-    await fs.writeJson(packageFile, {});
-  }
-  const package = await fs.readJson(packageFile);
-  return package;
-}
 
 const addDependencyPackage = async ({ debug, dependency }) => {
   debug && console.log(`Adding ${dependency}...`);
