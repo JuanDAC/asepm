@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-"use strict";
+'use strict';
 // @ts-check
 /**
  * asepm
@@ -44,21 +44,33 @@ const { selectorSubcommand } = require('./src/commands/selectors/subcommand');
 
 const input = cli.input;
 const flags = cli.flags;
+const inputDefault = [null, null, null];
 const { clear, debug } = flags;
 
 (async () => {
 	init({ clear });
 
-	const [command, subcommand] = [...input, null, null, null];
+	const [command, subcommand] = [...input, ...inputDefault];
 
 	debug && log(flags);
 
-	//** SINGLE COMMANDS */
-	if (command === null)
-		return log('Information about the command is required');
+	if (command === null) {
+		log({
+			type: `warning`,
+			name: `WARNING LOG`,
+			msg: 'Information about the command is required'
+		});
+		selectorSingle({ flags, command: 'help', args: input.slice(1), cli });
+	}
 
 	if (subcommand === null)
 		return selectorSingle({ flags, command, args: input.slice(1), cli });
 
-	return selectorSubcommand({ flags, command, subcommand, args: input.slice(2), cli });
+	return selectorSubcommand({
+		flags,
+		command,
+		subcommand,
+		args: input.slice(2),
+		cli
+	});
 })();

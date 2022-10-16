@@ -1,7 +1,7 @@
 const { init } = require("../actions/init");
 const { installAllFromPackage } = require("../actions/install");
 
-const selectorSingle = async ({ flags = {}, command, args, cli } = {}) => {
+const selectorSingle = async ({ flags = {}, command = '', args, cli } = {}) => {
   const { debug } = flags;
   /**
    * @type {command} help
@@ -9,7 +9,7 @@ const selectorSingle = async ({ flags = {}, command, args, cli } = {}) => {
    * @see https://www.npmjs.com/package/asepm#help
    * @example asepm help
    */
-  if (command.trim() === ('help') && args.length === 0)
+  if (command?.trim() === ('help') && args.length === 0)
     return cli.showHelp(0);
 
   /**
@@ -21,7 +21,7 @@ const selectorSingle = async ({ flags = {}, command, args, cli } = {}) => {
    * @example asepm install
    * TODO: Add support for installing asepm dependencies plugins and templates from asepm-package.json
    */
-  if (command.trim() === ('install') && args.length === 0)
+  if (command?.trim() === ('install') && args.length === 0)
     return await installAllFromPackage({ debug });
 
   /**
@@ -35,7 +35,7 @@ const selectorSingle = async ({ flags = {}, command, args, cli } = {}) => {
    * @example asepm init --template=script
    * @example asepm init --template=<template>
    */
-  if (command.trim() === ('init') && args.length === 0)
+  if (command?.trim() === ('init') && args.length === 0)
     return await init(flags);
 
 

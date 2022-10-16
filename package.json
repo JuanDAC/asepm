@@ -23,6 +23,7 @@
 		"format": "prettier --write \"./**/*.{js,json}\""
 	},
 	"dependencies": {
+		"axios": "^0.19.2",
 		"chalk": "^4.1.0",
 		"chalk-animation": "^2.0.2",
 		"cli-alerts": "^1.2.2",
