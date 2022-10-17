@@ -1,6 +1,5 @@
 {
 	"name": "asepm",
-	"type": "module",
 	"description": "Aseprite Package Manager",
 	"version": "0.0.1",
 	"main": "index.js",
