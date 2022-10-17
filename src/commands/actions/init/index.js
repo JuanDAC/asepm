@@ -10,12 +10,12 @@ const { cloneTemplate } = require('./cloneTemplate');
 const { obtainGenericData } = require('./obtainGenericData');
 const { applyAliases } = require('./applyAliases');
 
-const init = async ({ debug, template: templateRaw } = {}) => {
-	const [directory, template] = await cloneTemplate({
-		debug,
-		template: templateRaw
-	});
-	if (!directory) return;
+const init = async flags => {
+	const { debug } = flags;
+
+	const [directoryProject, template] = await cloneTemplate(flags);
+
+	if (!directoryProject) return;
 
 	/**
 	 * show the title of the program and description
@@ -30,8 +30,8 @@ const init = async ({ debug, template: templateRaw } = {}) => {
 	debug && log(dataDefault);
 
 	const templateDateConfig =
-		(await fs.readJson(`${directory}${templateData}`)) ?? {};
-	!debug && (await fs.remove(`${directory}${templateData}`));
+		(await fs.readJson(`${directoryProject}${templateData}`)) ?? {};
+	!debug && (await fs.remove(`${directoryProject}${templateData}`));
 
 	/**
 	 * Obtain the data for the template specified in the templateData file
@@ -46,12 +46,12 @@ const init = async ({ debug, template: templateRaw } = {}) => {
 	 * Replace in file the template data with the new data and save the file in the project directory
 	 */
 	const { filesToReplace } = templateDateConfig;
-	applyAliases({ filesToReplace, data, directory });
+	applyAliases({ filesToReplace, data, directory: directoryProject });
 
 	debug && log(`Adding information to JSON...`);
 
 	await pushPackageFile({
-		debug,
+		...flags,
 		data: { information: data, template, dependencies: [] }
 	});
 };

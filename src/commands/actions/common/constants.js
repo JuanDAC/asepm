@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const chalk = require('chalk');
 const figlet = require('figlet');
 const gradient = require('gradient-string');
-const modulesDirectory = '/src/modules';
+const modulesPath = '/src/modules';
 const templateData = '/data-requets.json';
 const packageFile = '/asepm-package.json';
 
@@ -15,11 +15,14 @@ const figletPromise = message =>
 		)
 	);
 
-const moduleDirectory = debug => `.`;
+// TODO: add get debug from flags object and get dorectory from flasg object
+const moduleDirectory = ({ directory }) =>
+	typeof directory === 'string' ? directory : '.';
 
-const getPackageFile = async ({ debug }) => {
-	await fs.ensureDir(moduleDirectory(debug));
-	const pathFilePackage = `${moduleDirectory(debug)}${packageFile}`;
+const getPackageFile = async flags => {
+	const { debug } = flags;
+	await fs.ensureDir(moduleDirectory(flags));
+	const pathFilePackage = `${moduleDirectory(flags)}${packageFile}`;
 	const exists = await fs.pathExists(pathFilePackage);
 	if (!exists) {
 		debug && console.log('Creating package file...');
@@ -30,9 +33,10 @@ const getPackageFile = async ({ debug }) => {
 	return package;
 };
 
-const pushPackageFile = async ({ debug, data }) => {
-	const pathFilePackage = `${moduleDirectory(debug)}${packageFile}`;
-	const package = await getPackageFile({ debug });
+const pushPackageFile = async flags => {
+	const { data } = flags;
+	const pathFilePackage = `${moduleDirectory(flags)}${packageFile}`;
+	const package = await getPackageFile(flags);
 	await fs.writeJson(pathFilePackage, { ...package, ...data }, { spaces: 2 });
 };
 const titleRender = async () => {
@@ -42,10 +46,11 @@ const titleRender = async () => {
 };
 
 module.exports = {
-	modulesDirectory,
+	moduleDirectory,
 	packageFile,
 	templateData,
 	getPackageFile,
 	pushPackageFile,
-	titleRender
+	titleRender,
+	modulesPath
 };
